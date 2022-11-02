@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mathgame/util/my_button.dart';
+import 'package:mathgame/util/pages/multiply_page.dart';
+import 'package:mathgame/util/pages/subtraction_page.dart';
 import 'package:mathgame/util/result_message.dart';
+import 'package:flutter/services.dart';
 
 import 'const.dart';
 
@@ -29,6 +32,10 @@ class _HomePageState extends State<HomePage> {
     '=',
     '0',
   ];
+
+  int lives = 5;
+
+  bool gameOver = false;
 
   // number A, number B
 
@@ -74,14 +81,44 @@ class _HomePageState extends State<HomePage> {
                 onTap: goToNextQuestion);
           });
     } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return ResultMessage(
-                icon: Icons.rotate_left,
-                message: 'Sorry try again!',
-                onTap: goBackToQuestion);
-          });
+      if (lives > 0) {
+        lives -= 1;
+        if (lives <= 0) {
+          gameOver = true;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Container(
+                  color: Colors.deepPurple,
+                  height: 200,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton.icon(
+                        label: Text(
+                          'Exit App',
+                          style: whiteTextStyle,
+                        ),
+                        icon: Icon(Icons.exit_to_app),
+                        onPressed: () {
+                          SystemNavigator.pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              });
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ResultMessage(
+                    icon: Icons.rotate_left,
+                    message: 'Sorry try again!',
+                    onTap: goBackToQuestion);
+              });
+        }
+      }
     }
   }
 
@@ -111,16 +148,74 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple[300],
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Colors.deepPurple[200],
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Center(
+                  child: Text('L O G O', style: whiteTextStyle),
+                ),
+              ),
+              ListTile(
+                // ignore: prefer_const_constructors
+                leading: Icon(Icons.home),
+                title: Text(
+                  'Page 1',
+                  style: whiteTextStyle_2,
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      // ignore: prefer_const_constructors
+                      builder: ((context) => SubtractionPage()),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text(
+                  'Page 1',
+                  style: whiteTextStyle_2,
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => MultiplyPage()),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.deepPurple[300],
       body: Column(
         children: [
           // level progress, playerr needs 5 correct answers in a row to proceed to next level
-
           Container(
             height: 160,
             color: Colors.deepPurple,
+            child: SizedBox(
+              height: 60,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: lives,
+                itemBuilder: (context, index) {
+                  return Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  );
+                },
+              ),
+            ),
           ),
-
           // question
           Expanded(
             child: Center(
