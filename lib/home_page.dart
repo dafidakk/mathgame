@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mathgame/util/my_button.dart';
-import 'package:mathgame/util/pages/multiply_page.dart';
-import 'package:mathgame/util/pages/subtraction_page.dart';
+import 'package:mathgame/pages/multiply_page.dart';
+import 'package:mathgame/pages/subtraction_page.dart';
 import 'package:mathgame/util/result_message.dart';
 import 'package:flutter/services.dart';
 
@@ -153,19 +153,29 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(
         child: Container(
-          color: Colors.deepPurple[200],
+          color: Colors.deepPurple[100],
           child: ListView(
             children: [
               DrawerHeader(
                 child: Center(
-                  child: Text('L O G O', style: whiteTextStyle),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Operation Menu',
+                        style: whiteTextStyle,
+                      ),
+                      Icon(Icons.gas_meter_outlined),
+                    ],
+                  ),
                 ),
               ),
               ListTile(
                 // ignore: prefer_const_constructors
-                leading: Icon(Icons.home),
+                leading: Icon(
+                  Icons.remove_circle_outline_sharp,
+                ),
                 title: Text(
-                  'Page 1',
+                  'Subtraction Page',
                   style: whiteTextStyle_2,
                 ),
                 onTap: () {
@@ -178,9 +188,11 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.home),
+                leading: Icon(
+                  Icons.multiline_chart,
+                ),
                 title: Text(
-                  'Page 1',
+                  'Multiply Page',
                   style: whiteTextStyle_2,
                 ),
                 onTap: () {
@@ -200,17 +212,18 @@ class _HomePageState extends State<HomePage> {
         children: [
           // level progress, playerr needs 5 correct answers in a row to proceed to next level
           Container(
-            height: 160,
+            height: 100,
             color: Colors.deepPurple,
             child: SizedBox(
-              height: 60,
+              height: 20,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: lives,
                 itemBuilder: (context, index) {
                   return Icon(
                     Icons.favorite,
-                    color: Colors.red,
+                    color: Colors.green.shade400,
+                    size: 40,
                   );
                 },
               ),

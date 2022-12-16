@@ -6,6 +6,9 @@ class MultiplyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Multiply Page"),
+      ),
       backgroundColor: Colors.green[200],
       body: Center(
         child: Text('MultiplyPage'),
